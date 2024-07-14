@@ -8,8 +8,8 @@ import {
   Button,
   Card,
   Space,
-  Typography,
-  Divider,
+  // Typography,
+  // Divider,
   Form,
   Tooltip,
   message,
@@ -17,8 +17,8 @@ import {
 } from "antd";
 import ProductForm from "./AddProduct";
 
-const Items = ({ items }) => {
-  const { Title } = Typography;
+const Items = () => {
+  // const { Title } = Typography;
   const [form] = Form.useForm();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [products, setProducts] = useState([]);
