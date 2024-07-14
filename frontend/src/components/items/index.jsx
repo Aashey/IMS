@@ -2,20 +2,18 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 import {
-  Table,
   Drawer,
-  AutoComplete,
   Button,
   Card,
   Space,
   // Typography,
   // Divider,
   Form,
-  Tooltip,
   message,
-  Popconfirm,
 } from "antd";
 import ProductForm from "./AddProduct";
+import ProductTable from "./ProductTable";
+import CustomAutocomplete from "../../common/Autocomplete";
 
 const Items = () => {
   // const { Title } = Typography;
@@ -26,80 +24,6 @@ const Items = () => {
   const [formMode, setFormMode] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-
-  const columns = [
-    {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
-      width: 50,
-    },
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-      width: 300,
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-    },
-    {
-      title: "Brand",
-      dataIndex: "brand",
-      key: "brand",
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      width: 150,
-      sorter: (a, b) => a.price - b.price,
-    },
-    {
-      title: "Color",
-      dataIndex: "color",
-      key: "color",
-    },
-    {
-      title: "Size",
-      dataIndex: "size",
-      key: "size",
-    },
-    {
-      title: "Action",
-      width: 200,
-      // dataIndex: "size",
-      // key: "size",
-      render: (record) => (
-        <div style={{ display: "flex", gap: "20px" }}>
-          <Tooltip title="Edit">
-            <Button
-              type="primary"
-              onClick={() => handleEditForm(record)}
-              icon={<i className="fa-solid fa-pen"></i>}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Popconfirm
-              title="Delete the product ?"
-              onConfirm={() => handleDeleteProduct(record)}
-            >
-              <Button
-                type="primary"
-                style={{
-                  backgroundColor: "#d41528",
-                  color: "white",
-                }}
-                icon={<i className="fa-solid fa-trash"></i>}
-              />
-            </Popconfirm>
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
 
   const handleDeleteProduct = async (record) => {
     try {
@@ -208,21 +132,15 @@ const Items = () => {
           >
             Add Item
           </Button>
-
-          <AutoComplete
-            style={{ width: 350, marginBottom: "10px" }}
-            placeholder="Search Products by name"
-            onChange={handleSearch}
-            allowClear={true}
-          />
+          <CustomAutocomplete handleSearch={handleSearch} />
         </Space>
-        <Table
-          rowKey="id"
-          dataSource={searchText ? filteredProducts : products}
-          pagination={{ pageSize: 10, position: ["bottomCenter"] }}
-          scroll={{ y: 240 }}
-          columns={columns}
-        ></Table>
+        <ProductTable
+          searchText={searchText}
+          filteredProducts={filteredProducts}
+          products={products}
+          onDelete={handleDeleteProduct}
+          onEdit={handleEditForm}
+        />
       </Card>
 
       <Drawer
